@@ -17,3 +17,9 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+app.get('/status', (req, res) => {
+  const id = req.query.id;
+  const status = transactions[id] || 'unknown';
+  res.json({ status });
+});
