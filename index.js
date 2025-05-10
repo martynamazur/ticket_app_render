@@ -16,7 +16,7 @@ app.post('/callback', (req, res) => {
     transactions[transactionId] = { status };
   }
 
-  res.status(200).send('OK');
+  res.status(200).send('TRUE');
 });
 
 app.get('/status', (req, res) => {
