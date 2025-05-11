@@ -38,15 +38,14 @@ app.get('/status', async (req, res) => {
 
   const { data, error } = await supabase
     .from('transactions')
-    .select('status', { head: false, count: 'exact' })
-    .eq('id', id)
-    .single();
+    .select('status')
+    .eq('id', id);
 
-  if (error || !data) {
+  if (error || !data || data.length === 0) {
     return res.status(404).json({ status: 'not_found' });
   }
 
-  res.json({ status: data.status });
+  res.json({ status: data[0].status });
 });
 
 app.get('/', (req, res) => {
