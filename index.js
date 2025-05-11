@@ -1,39 +1,59 @@
+require('dotenv').config();
 const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
+const { createClient } = require('@supabase/supabase-js');
 
+const app = express();
 app.use(express.json());
 
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+);
 
-const transactions = {};
 
-app.post('/callback', (req, res) => {
+app.post('/callback', async (req, res) => {
   const { transactionId, status } = req.body;
 
   console.log('Received callback:', req.body);
 
-  if (transactionId && status) {
-    transactions[transactionId] = { status };
+  if (!transactionId || !status) {
+    return res.status(400).send('Missing transactionId or status');
+  }
+
+  const { error } = await supabase
+    .from('transactions') 
+    .upsert({ id: transactionId, status });
+
+  if (error) {
+    console.error('Supabase insert error:', error);
+    return res.status(500).send('Database error');
   }
 
   res.status(200).send('TRUE');
 });
 
-app.get('/status', (req, res) => {
-  const id = req.query.id;
-  const transaction = transactions[id];
 
-  if (!transaction) {
+app.get('/status', async (req, res) => {
+  const id = req.query.id;
+
+  const { data, error } = await supabase
+    .from('transactions')
+    .select('status')
+    .eq('id', id)
+    .single();
+
+  if (error || !data) {
     return res.status(404).json({ status: 'not_found' });
   }
 
-  res.json({ status: transaction.status });
+  res.json({ status: data.status });
 });
 
 app.get('/', (req, res) => {
   res.send('Tpay callback server is running.');
 });
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
