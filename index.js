@@ -38,7 +38,7 @@ app.get('/status', async (req, res) => {
 
   const { data, error } = await supabase
     .from('transactions')
-    .select('status')
+    .select('status', { head: false, count: 'exact' })
     .eq('id', id)
     .single();
 
