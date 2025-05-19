@@ -61,7 +61,7 @@ app.post('/payments/googlepay', async (req, res) => {
   }
 
   try {
-    const response = await fetch('https://secure.tpay.com/api/transactions', {
+    const response = await fetch('https://openapi.sandbox.tpay.com/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
