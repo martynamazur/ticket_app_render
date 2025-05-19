@@ -54,10 +54,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/payments/googlepay', async (req, res) => {
-  const { encodedToken } = req.body;
+  const { encodedToken,amount, description } = req.body;
 
-  if (!encodedToken) {
-    return res.status(400).json({ error: 'Brak tokena Google Pay' });
+  if (!encodedToken || !amount) {
+    return res.status(400).json({ error: 'Brak tokena Google Pay lub kwoty' });
   }
 
   try {
@@ -69,7 +69,9 @@ app.post('/payments/googlepay', async (req, res) => {
       },
       body: JSON.stringify({
         pay: {
-          groupId: parseInt(process.env.TPAY_GROUP_ID, 10), // np. 166
+          groupId: parseInt(process.env.TPAY_GROUP_ID, 10), 
+          amount: amount, 
+          description: description || 'Zakup biletu',
           googlePayPaymentData: encodedToken
         }
       })
