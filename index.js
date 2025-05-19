@@ -53,6 +53,49 @@ app.get('/', (req, res) => {
   res.send('Tpay callback server is running.');
 });
 
+app.post('/payments/googlepay', async (req, res) => {
+  const { encodedToken } = req.body;
+
+  if (!encodedToken) {
+    return res.status(400).json({ error: 'Brak tokena Google Pay' });
+  }
+
+  try {
+    const response = await fetch('https://secure.tpay.com/api/transactions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + Buffer.from(`${process.env.TPAY_CLIENT_ID}:${process.env.TPAY_CLIENT_SECRET}`).toString('base64')
+      },
+      body: JSON.stringify({
+        pay: {
+          groupId: parseInt(process.env.TPAY_GROUP_ID, 10), // np. 166
+          googlePayPaymentData: encodedToken
+        }
+      })
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      console.error('Tpay error:', responseData);
+      return res.status(500).json({ error: 'Błąd Tpay', details: responseData });
+    }
+
+  
+    await supabase.from('transactions').upsert({
+      id: responseData.title, 
+      status: 'pending'
+    });
+
+    return res.status(200).json({ success: true, tpayData: responseData });
+  } catch (err) {
+    console.error('Server error:', err);
+    return res.status(500).json({ error: 'Wewnętrzny błąd serwera' });
+  }
+});
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
