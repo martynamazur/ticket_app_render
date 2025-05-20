@@ -69,17 +69,16 @@ app.post('/payments/googlepay', async (req, res) => {
         Authorization: 'Basic ' + Buffer.from(`${process.env.TPAY_CLIENT_ID}:${process.env.TPAY_CLIENT_SECRET}`).toString('base64')
       },
       body: JSON.stringify({
-        pay: {
-          groupId: parseInt(process.env.TPAY_GROUP_ID, 10), 
-          amount: '4.00', 
-          description: description || 'Zakup biletu',
-          googlePayPaymentData: encodedToken
-        },
-      payer: {
-            email: email,
-            name:  name
-          }
-      })
+        groupId: parseInt(process.env.TPAY_GROUP_ID, 10),
+        amount: '4.00',
+        description: description || 'Zakup biletu',
+        googlePayPaymentData: encodedToken,
+        payer: {
+          email: email,
+          name: name
+        }
+})
+
     });
 
     const responseData = await response.json();
