@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/payments/googlepay', async (req, res) => {
-  const { encodedToken,amount, description } = req.body;
+  const { encodedToken,amount, description, email, name } = req.body;
   console.log('Received amount:', amount, 'parsed as:', parseFloat(amount));
 
   if (!encodedToken || !amount) {
@@ -74,7 +74,11 @@ app.post('/payments/googlepay', async (req, res) => {
           amount: parseFloat(amount), 
           description: description || 'Zakup biletu',
           googlePayPaymentData: encodedToken
-        }
+        },
+      payer: {
+            email: email,
+            name:  name
+          }
       })
     });
 
