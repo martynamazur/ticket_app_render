@@ -71,7 +71,7 @@ app.post('/payments/googlepay', async (req, res) => {
       body: JSON.stringify({
         pay: {
           groupId: parseInt(process.env.TPAY_GROUP_ID, 10), 
-          amount: parseFloat(amount), 
+          amount: amount, 
           description: description || 'Zakup biletu',
           googlePayPaymentData: encodedToken
         },
