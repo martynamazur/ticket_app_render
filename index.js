@@ -70,7 +70,7 @@ app.post('/payments/googlepay', async (req, res) => {
       },
       body: JSON.stringify({
         groupId: parseInt(process.env.TPAY_GROUP_ID, 10),
-        amount: '4.00',
+        amount: amount,
         description: description || 'Zakup biletu',
         googlePayPaymentData: encodedToken,
         payer: {
