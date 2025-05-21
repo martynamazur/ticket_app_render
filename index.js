@@ -48,11 +48,12 @@ app.post('/activate-ticket', (req, res) => {
 
   const token = authHeader.split(' ')[1];
 
-  jwt.verify(token, getKey, {}, async (err, decoded) => {
-    if (err) {
-      console.error('Błąd JWT:', err);
-      return res.status(403).json({ error: 'Nieprawidłowy token' });
-    }
+  jwt.verify(token, process.env.SUPABASE_JWT_SECRET, {}, async (err, decoded) => {
+  if (err) {
+    console.error('Błąd JWT:', err);
+    return res.status(403).json({ error: 'Nieprawidłowy token' });
+  }
+
 
     const user_id = decoded.sub; // <- id użytkownika z Supabase
     const { vehicle_id, ticket_id, activation_time, transaction_id } = req.body;
