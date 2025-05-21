@@ -56,6 +56,7 @@ app.post('/activate-ticket', (req, res) => {
 
 
     const user_id = decoded.sub; // <- id użytkownika z Supabase
+    console.log(decoded.sub); 
     const { vehicle_id, ticket_id, activation_time, transaction_id } = req.body;
 
     if (!ticket_id || !vehicle_id || !activation_time || !transaction_id) {
