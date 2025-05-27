@@ -25,9 +25,9 @@ router.post('/callback', async (req, res) => {
 
 router.post('/googlepay', async (req, res) => {
     const { encodedToken, amount, description, email, name } = req.body;
+    
 
-
-    if (!encodedToken || !amount || !descriprion || !email || !name) {
+    if (!encodedToken || !amount || !description || !email || !name) {
         return res.status(400).json({ error: 'Nie przekazano wszystkich parametrow naglowka' });
     }
 
