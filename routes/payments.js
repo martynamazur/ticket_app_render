@@ -1,4 +1,4 @@
-const supabase = require('./services/supabaseClient');
+const supabase = require('../services/supabaseClient');
 
 app.post('/callback', async (req, res) => {
     const { transactionId, status } = req.body;
