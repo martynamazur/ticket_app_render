@@ -1,3 +1,6 @@
+const express = require('express');
+const router = express.Router();
+
 router.get('/status', async (req, res) => {
     const id = req.query.id;
 
@@ -12,3 +15,6 @@ router.get('/status', async (req, res) => {
 
     res.json({ status: data[0].status });
 });
+
+
+module.exports = router;
