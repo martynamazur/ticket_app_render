@@ -1,3 +1,5 @@
+const express = require('express');
+const router = express.Router();
 const supabase = require('../services/supabaseClient');
 
 app.post('/callback', async (req, res) => {
@@ -68,3 +70,5 @@ app.post('/payments/googlepay', async (req, res) => {
         return res.status(500).json({ error: 'Wewnêtrzny b³¹d serwera' });
     }
 });
+
+module.exports = router;
