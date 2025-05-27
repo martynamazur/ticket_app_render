@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const supabase = require('../services/supabaseClient');
 
-app.post('/callback', async (req, res) => {
+router.post('/callback', async (req, res) => {
     const { transactionId, status } = req.body;
 
     console.log('Received callback:', req.body);
@@ -23,7 +23,7 @@ app.post('/callback', async (req, res) => {
     res.status(200).send('TRUE');
 });
 
-app.post('/payments/googlepay', async (req, res) => {
+router.post('/payments/googlepay', async (req, res) => {
     const { encodedToken, amount, description, email, name } = req.body;
 
 
