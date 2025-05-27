@@ -12,8 +12,10 @@ const paymentRouter = require('./routes/payments');
 const statusRouter = require('./routes/status');
 
 
-app.use('/', ticketRouter); // /activate-ticket, /status
-app.use('/payments', paymentRouter); // /payments/googlepay, /callback
+app.use('/', ticketRouter); 
+app.use('/payments', paymentRouter); 
+app.use('/', statusRouter); 
+
 
 app.get('/', (req, res) => {
     res.send('Tpay callback server is running.');
