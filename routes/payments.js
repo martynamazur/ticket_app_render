@@ -23,7 +23,7 @@ router.post('/callback', async (req, res) => {
     res.status(200).send('TRUE');
 });
 
-router.post('/payments/googlepay', async (req, res) => {
+router.post('/googlepay', async (req, res) => {
     const { encodedToken, amount, description, email, name } = req.body;
 
 
