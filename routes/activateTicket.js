@@ -17,9 +17,9 @@ router.post('/activate-ticket', async (req, res) => {
         const decoded = jwt.verify(token, process.env.SUPABASE_JWT_SECRET);
         const user_id = decoded.sub;
 
-        const { vehicle_id, ticket_id, activation_time, transaction_id, ticket_duration } = req.body;
+        const { vehicle_id, ticket_id, transaction_id, ticket_duration } = req.body;
 
-        if (!vehicle_id || !ticket_id || !activation_time || !transaction_id || !ticket_duration) {
+        if (!vehicle_id || !ticket_id || !transaction_id || !ticket_duration) {
             return res.status(400).json({ error: 'Missing fields' });
         }
 
@@ -39,7 +39,13 @@ router.post('/activate-ticket', async (req, res) => {
             [user_id, vehicle_id, activated_at, expires_at, qr_token, ticket_id, transaction_id]
         );
 
-        res.status(201).json(result.rows[0]);
+        res.status(201).json(
+            {
+                qrToken: qr_token,
+                activated_at: activated_at.toISOString(),
+                expires_at: expires_at.toISOString(),
+            }
+        );
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error' });
