@@ -2,19 +2,28 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/status', async (req, res) => {
-    const id = req.query.id;
+    try {
+        const id = req.query.id;
 
-    const { data, error } = await supabase
-        .from('transactions')
-        .select('status')
-        .eq('id', id);
+        const { data, error } = await supabase
+            .from('transactions')
+            .select('status')
+            .eq('id', id);
 
-    if (error || !data || data.length === 0) {
-        return res.status(404).json({ status: 'not_found' });
+        if (error) {
+            console.error('Supabase error:', error);
+            return res.status(500).json({ error: 'B³¹d bazy danych' });
+        }
+
+        if (!data || data.length === 0) {
+            return res.status(404).json({ status: 'not_found' });
+        }
+
+        res.json({ status: data[0].status });
+    } catch (err) {
+        console.error('Unhandled error:', err);
+        res.status(500).json({ error: 'Wewnêtrzny b³¹d serwera' });
     }
-
-    res.json({ status: data[0].status });
 });
-
 
 module.exports = router;
