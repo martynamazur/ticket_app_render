@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../services/supabaseClient');
-const fetch = require('node-fetch');
+
 
 router.post('/callback', async (req, res) => {
     const { transactionId, status } = req.body;
