@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../services/supabaseClient');
+const fetch = require('node-fetch');
 
 router.post('/callback', async (req, res) => {
     const { transactionId, status } = req.body;
@@ -25,6 +26,8 @@ router.post('/callback', async (req, res) => {
 
 router.post('/googlepay', async (req, res) => {
     const { encodedToken, amount, description, email, name } = req.body;
+    console.log('  /payments/googlepay hit');
+    console.log(' Request body:', req.body);
     
 
     if (!encodedToken || !amount || !description || !email || !name) {

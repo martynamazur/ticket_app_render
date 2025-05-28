@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const fetch = require('node-fetch');
 const { pool } = require('../services/db'); 
 
 router.post('/activate-ticket', (req, res) => {
