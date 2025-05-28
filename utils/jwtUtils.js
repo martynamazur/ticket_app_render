@@ -1,4 +1,4 @@
-const jwksClient = require('jwks-rsa');
+import jwksClient from 'jwks-rsa';
 
 const client = jwksClient({
     jwksUri: 'https://hhvriufzsfvhjtoijfsx.supabase.co/auth/v1/keys',
@@ -12,4 +12,4 @@ function getKey(header, callback) {
     });
 }
 
-module.exports = { getKey };
+export { getKey };

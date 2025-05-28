@@ -1,4 +1,6 @@
-const express = require('express');
+import express from 'express';
+import supabase from '../services/supabaseClient.js'; // Upewnij siê, ¿e masz plik supabaseClient.js
+
 const router = express.Router();
 
 router.get('/status', async (req, res) => {
@@ -26,4 +28,4 @@ router.get('/status', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const supabase = require('../services/supabaseClient');
+import express from 'express';
+import supabase from '../services/supabaseClient.js'; // Upewnij siê, ¿e masz plik supabaseClient.js eksportuj¹cy instancjê
 
+const router = express.Router();
 
 router.post('/callback', async (req, res) => {
     const { transactionId, status } = req.body;
@@ -28,7 +28,6 @@ router.post('/googlepay', async (req, res) => {
     const { encodedToken, amount, description, email, name } = req.body;
     console.log('  /payments/googlepay hit');
     console.log(' Request body:', req.body);
-    
 
     if (!encodedToken || !amount || !description || !email || !name) {
         return res.status(400).json({ error: 'Nie przekazano wszystkich parametrow naglowka' });
@@ -51,7 +50,6 @@ router.post('/googlepay', async (req, res) => {
                     name: name
                 }
             })
-
         });
 
         const responseData = await response.json();
@@ -60,7 +58,6 @@ router.post('/googlepay', async (req, res) => {
             console.error('Tpay error:', responseData);
             return res.status(500).json({ error: 'B³¹d Tpay', details: responseData });
         }
-
 
         await supabase.from('transactions').upsert({
             id: responseData.title,
@@ -74,4 +71,4 @@ router.post('/googlepay', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;
