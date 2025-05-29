@@ -32,12 +32,14 @@ router.post('/activate-ticket', async (req, res) => {
             { expiresIn: `${ticket_duration}m` }
         );
 
+        /*
         const result = await pool.query(
             `INSERT INTO activated_tickets (user_id, vehicle_id, activated_at, expires_at, qr_token, ticket_id, transaction_id)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
             [user_id, vehicle_id, activated_at, expires_at, qr_token, ticket_id, transaction_id]
         );
+        */
 
         console.log('Activated at:', activated_at.toISOString());
         console.log('Expires at:', expires_at.toISOString());
