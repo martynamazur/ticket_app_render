@@ -23,7 +23,7 @@ router.post('/activate-ticket', async (req, res) => {
             return res.status(400).json({ error: 'Missing fields' });
         }
 
-        const activated_at = new Date(activation_time);
+        const activated_at = new Date();
         const expires_at = new Date(activated_at.getTime() + ticket_duration * 60 * 1000);
 
         const qr_token = jwt.sign(
@@ -38,6 +38,9 @@ router.post('/activate-ticket', async (req, res) => {
        RETURNING *`,
             [user_id, vehicle_id, activated_at, expires_at, qr_token, ticket_id, transaction_id]
         );
+
+        console.log('Activated at:', activated_at.toISOString());
+        console.log('Expires at:', expires_at.toISOString());
 
         res.status(201).json(
             {
